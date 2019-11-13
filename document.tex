@@ -1,0 +1,2214 @@
+\documentclass[a4paper,10pt,twoside]{extarticle}
+
+% PARAMETER TO GREY OUT TEXT
+\usepackage{etoolbox}
+\newtoggle{greytext}
+%\toggletrue{greytext}
+\togglefalse{greytext}
+
+% PARAMETER TO SHORTEN DOCUMENT
+\newtoggle{shortdocument}
+\toggletrue{shortdocument}
+%\togglefalse{shortdocument}
+
+% REDUCE FONT SIZE IF REQUESTED
+\iftoggle{shortdocument}{
+% TODO FIND OUT HOW TO SET IT TO 8 pt
+}{
+}
+
+% DECREASE LINE SPACING IF REQUESTED
+\iftoggle{shortdocument}{
+\setlength{\baselineskip}{0pt}
+\renewcommand{\baselinestretch}{0.00001}
+% TODO: next time: (better, but i have to use other equations)
+%\setlength{\baselineskip}{1pt}
+%\setlength{\lineskiplimit}{-16pt}
+}
+
+% PAPER LAYOUT
+\iftoggle{shortdocument}{
+\usepackage[margin=0.25cm,twoside]{geometry}
+}{
+\usepackage[margin=0.5cm,twoside,bindingoffset=9mm]{geometry}
+}
+
+% LANDSCAPE PACKAGE
+\usepackage{pdflscape}
+
+% TODO: page numbering
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\vspace*{-0.55cm}\colorbox{white}{\scriptsize\thepage}}
+\setlength{\footskip}{4pt}
+
+
+% COMMENTS (invisible)
+\usepackage{comment}
+
+% COLORS
+\usepackage{color}
+\usepackage{xcolor}
+
+% COLOR SHORTCUTS
+\iftoggle{greytext}{
+\newcommand{\tcr}[1]{\textcolor{lighttext}{#1}}
+\newcommand{\tcb}[1]{\textcolor{lighttext}{#1}}
+\newcommand{\tcg}[1]{\textcolor{lighttext}{#1}}
+\newcommand{\tcgr}[1]{\textcolor{lighttext}{#1}}
+\newcommand{\tcp}[1]{\textcolor{lighttext}{#1}}
+}{
+\newcommand{\tcr}[1]{\textcolor{red}{#1}}
+\newcommand{\tcb}[1]{\textcolor{blue}{#1}}
+\newcommand{\tcg}[1]{\textcolor{green}{#1}}
+\newcommand{\tcp}[1]{\textcolor{pink}{#1}}
+\newcommand{\tcgr}[1]{\textcolor{gray}{#1}}
+}
+
+% MULTICOLUMN LAYOUT
+\usepackage{multicol}
+\iftoggle{shortdocument}{
+\setlength\columnsep{10pt}
+}{
+\setlength\columnsep{20pt}
+}
+\setlength{\columnseprule}{0.1pt}
+\iftoggle{greytext}{
+\renewcommand{\columnseprulecolor}{\color{lighttext}}
+}{
+}
+
+% PARAGRAPH LAYOUT
+\setlength\parindent{0pt}	% indentation
+\setlength\parskip{2pt}		% space between paragraphs
+
+% LANGUAGE SETTINGS
+%\usepackage[ngerman]{babel} % Silbentrennung (und Deutsche Titel)
+\usepackage[utf8]{inputenc} % Umlaute
+
+% FONTS
+%\usepackage{mathpazo}
+%\usepackage{helvet}
+%\usepackage{fouriernc}
+%\usepackage[varg]{txfonts}
+%\usepackage{mathptmx}
+%\usepackage[charter]{mathdesign}
+%\usepackage[garamond]{mathdesign}
+%\usepackage[utopia]{mathdesign}
+%\usepackage{fourier}
+% font kerning (load after specific font!)
+\usepackage{microtype}
+
+% CUSTOM FONT SIZES
+\usepackage{relsize}
+
+% FIGURE SETTINGS
+\usepackage{pict2e} % load this before picture
+\usepackage{picture}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% TIKZ GRAPHICS
+\usepackage{tikz}
+\usetikzlibrary{calc,matrix,arrows,automata,fit}
+
+% PLOTS
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
+
+% FLOAT SETTINGS
+\usepackage{float}
+
+% REFERENCING
+\usepackage{hyperref}
+
+% TABLES
+\usepackage{booktabs} % nicer tables
+\usepackage{array} % custom column types
+\usepackage{multirow} % span cells over multiple rows
+\newcommand{\tabitem}{~~\llap{{\boldmath $\cdot$}}~} % items in tables
+
+% LISTS
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,leftmargin=10pt}
+\renewcommand\labelitemi{{\boldmath$\cdot$}}
+\renewcommand\labelitemii{{\boldmath$\cdot$}}
+\renewcommand\labelitemiii{{\boldmath$\cdot$}}
+% advantages disadvantages
+\newcommand\pro{\item[$+$]}
+\newcommand\con{\item[$-$]}
+
+% TIGHT CENTER ENVIRONMENT
+\newenvironment{tightcenter}{%
+  \begin{center}
+  \vspace{-12pt}
+}{
+  \vspace{-12pt}
+  \end{center}
+}
+
+% MATH (packages and settings)
+\usepackage{blkarray}  		% matrix annotations
+\usepackage[intlimits]{mathtools}
+\usepackage{amssymb}
+\usepackage{wasysym}
+\usepackage{ifsym}
+\usepackage{dsfont}
+\usepackage{resizegather} 	% resizing equations
+\usepackage{oubraces}    	% special overlapping over/underbraces
+\usepackage{scalerel}		% scaling of characters
+\usepackage{cancel}			% crossing out of terms
+\allowdisplaybreaks 		% allow page break in align* environment
+
+% PROOF TREES
+\usepackage{proof}
+\inferLineSkip=4pt % adjust line skip between proofs
+
+% PROOFS
+\newcommand{\qed}{\hfill$\square$}
+\newcommand{\contradiction}{\hfill$\lightning$}
+
+% MATH HIGHLIGHTING
+\newcommand{\mhl}[2]{\colorbox{#1}{$\displaystyle#2$}}
+\newcommand{\mhlr}[1]{\mathhl{red}{#1}}
+\newcommand{\mhlg}[1]{\mathhl{green}{#1}}
+\newcommand{\mhlb}[1]{\mathhl{blue}{#1}}
+\newcommand{\mhly}[1]{\mathhl{yellow}{#1}}
+
+% CODE IN MATH
+\newcommand{\mcode}[1]{\texttt{#1}}
+
+% COLOR IN MATH (without the bad behaviour of textcolor)
+\makeatletter
+\def\mc#1#{\@mc{#1}}
+\def\@mc#1#2#3{%
+  \protect\leavevmode
+  \begingroup
+    \color#1{#2}#3%
+  \endgroup
+}
+\makeatother
+
+\iftoggle{greytext}{
+\definecolor{brilliantrose}{rgb}{1.0, 0.33, 0.64}
+\newcommand{\mcr}[1]{\mc{lighttext}{#1}}
+\newcommand{\mcg}[1]{\mc{lighttext}{#1}}
+\newcommand{\mcb}[1]{\mc{lighttext}{#1}}
+\newcommand{\mcy}[1]{\mc{lighttext}{#1}}
+\newcommand{\mcp}[1]{\mc{lighttext}{#1}}
+\newcommand{\mcw}[1]{\mc{white}{#1}}
+}{
+\definecolor{brilliantrose}{rgb}{1.0, 0.33, 0.64}
+\newcommand{\mcr}[1]{\mc{red}{#1}}
+\newcommand{\mcg}[1]{\mc{green}{#1}}
+\newcommand{\mcb}[1]{\mc{blue}{#1}}
+\newcommand{\mcy}[1]{\mc{yellow}{#1}}
+\newcommand{\mcp}[1]{\mc{brilliantrose}{#1}}
+\newcommand{\mcw}[1]{\mc{white}{#1}}
+}
+
+% ASYMPTOTIC NOTATIONS
+\newcommand{\BigO}{\mathcal{O}}
+
+% NUMBER SYSTEMS
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\C}{\mathbb{C}}
+
+% CALLICGRAPHIC SHORTCUTS
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+% BRACES
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\dset}[2]{\left\{ #1 \ \middle| \ #2 \right\}}
+\newcommand{\alg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\card}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\length}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\scprod}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\linsys}[2]{\left[\ #1 \ \middle| \ #2 \ \right]}
+\newcommand{\Sim}[1]{\text{Sim}\left( #1 \right)}
+
+% BRACES SMALL (no adjusting)
+\newcommand{\sset}[1]{\{ #1 \}}
+\newcommand{\sdset}[2]{\{ #1 \ | \ #2 \}}
+\newcommand{\salg}[1]{\langle #1 \rangle}
+\newcommand{\scard}[1]{\lvert #1 \rvert}
+\newcommand{\slength}[1]{\lvert #1 \rvert}
+\newcommand{\sabs}[1]{\lvert #1 \rvert}
+\newcommand{\snorm}[1]{\lVert #1 \rVert}
+\newcommand{\sscprod}[1]{\langle #1 \rangle}
+\newcommand{\sceil}[1]{\lceil #1 \rceil}
+\newcommand{\sfloor}[1]{\lfloor #1 \rfloor}
+\newcommand{\slinsys}[2]{[\ #1 \ | \ #2 \ ]}
+\newcommand{\sSim}[1]{\text{Sim}( #1 )}
+
+% EMPTY SET
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% NOT IN SHORTCUT
+\newcommand{\nin}{\not\in}
+
+% DISJOINT UNION SYMBOL
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\cup}}
+
+% CUSTOM STATISTICS
+\newcommand{\Prob}[2][]{P_{#1}\left( #2 \right)}
+\newcommand{\cProb}[2]{P\left( #1 \,\middle|\, #2 \right)}
+\newcommand{\Dist}[2]{#1\left( #2 \right)}
+\newcommand{\cDist}[3]{#1\left( #2 \,\middle|\, #3 \right)}
+\newcommand{\hProb}[2][]{\hat{P}_{#1}\left( #2 \right)}
+\newcommand{\chProb}[2]{\hat{P}\left( #1 \,\middle|\, #2 \right)}
+\newcommand{\Var}[2][]{\operatorname{Var}_{#1}\left[ #2 \right]}
+\newcommand{\sd}[1]{\operatorname{sd}\left( #1 \right)}
+\newcommand{\Exp}[2][]{{\mathbb{E}_{#1}}\left[ #2
+\right]}
+\newcommand{\cExp}[3][]{{\mathbb{E}}_{#1}\left[ #2
+\,\middle|\, #3 \right]}
+\newcommand{\hExp}[2][]{{\mathbb{\hat{E}}_{#1}}\left[ #2
+\right]}
+\newcommand{\chExp}[3][]{{\mathbb{\hat{E}}}_{#1}\left[ #2
+\,\middle|\, #3 \right]}
+\newcommand{\Corr}[1]{\operatorname{Corr}\left[ #1 \right]}
+\newcommand{\Cov}[1]{\operatorname{Cov}\left(#1 \right)}
+\newcommand{\MSE}[2][]{\operatorname{MSE}_{#1}\left[ #2 \right]}
+\newcommand{\riid}{\stackrel{\text{\tiny i.i.d.}}{\sim}}
+\newcommand{\approxsim}{\stackrel{\text{approx.}}{\sim}}
+\newcommand{\ind}[1]{\mathds{1}_{\set{#1}}}
+\newcommand{\eqiid}{\stackrel{\text{\tiny i.i.d.}}{=}}
+\newcommand{\eqind}{\stackrel{\text{\tiny ind.}}{=}}
+
+% RANDOM VARIABLES
+\newcommand{\rA}{A}
+\newcommand{\rB}{B}
+\newcommand{\rC}{C}
+\newcommand{\rD}{D}
+\newcommand{\rE}{E}
+\newcommand{\rF}{F}
+\newcommand{\rG}{G}
+\newcommand{\rH}{H}
+\newcommand{\rI}{I}
+\newcommand{\rJ}{J}
+\newcommand{\rK}{K}
+\newcommand{\rL}{L}
+\newcommand{\rM}{M}
+\newcommand{\rN}{N}
+\newcommand{\rO}{O}
+\newcommand{\rP}{P}
+\newcommand{\rQ}{Q}
+\newcommand{\rR}{R}
+\newcommand{\rS}{S}
+\newcommand{\rT}{T}
+\newcommand{\rU}{U}
+\newcommand{\rV}{V}
+\newcommand{\rW}{W}
+\newcommand{\rX}{X}
+\newcommand{\rY}{Y}
+\newcommand{\rZ}{Z}
+
+% RANDOM VECTORS
+% declares a custom italic bold alphabet for random vectors
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\newcommand{\rvA}{\mathbfit{A}}
+\newcommand{\rvB}{\mathbfit{B}}
+\newcommand{\rvC}{\mathbfit{C}}
+\newcommand{\rvD}{\mathbfit{D}}
+\newcommand{\rvE}{\mathbfit{E}}
+\newcommand{\rvF}{\mathbfit{F}}
+\newcommand{\rvG}{\mathbfit{G}}
+\newcommand{\rvH}{\mathbfit{H}}
+\newcommand{\rvI}{\mathbfit{I}}
+\newcommand{\rvJ}{\mathbfit{J}}
+\newcommand{\rvK}{\mathbfit{K}}
+\newcommand{\rvL}{\mathbfit{L}}
+\newcommand{\rvM}{\mathbfit{M}}
+\newcommand{\rvN}{\mathbfit{N}}
+\newcommand{\rvO}{\mathbfit{O}}
+\newcommand{\rvP}{\mathbfit{P}}
+\newcommand{\rvQ}{\mathbfit{Q}}
+\newcommand{\rvR}{\mathbfit{R}}
+\newcommand{\rvS}{\mathbfit{S}}
+\newcommand{\rvT}{\mathbfit{T}}
+\newcommand{\rvU}{\mathbfit{U}}
+\newcommand{\rvV}{\mathbfit{V}}
+\newcommand{\rvW}{\mathbfit{W}}
+\newcommand{\rvX}{\mathbfit{X}}
+\newcommand{\rvY}{\mathbfit{Y}}
+\newcommand{\rvZ}{\mathbfit{Z}}
+
+% MACHINE LEARNING
+\newcommand{\Risk}[1]{R\left(#1\right)}
+\newcommand{\empRisk}[1]{\widehat{R}\left(#1\right)}
+
+% ACCENTS
+% TODO: fix this, make spacing nice
+\newcommand*{\Hm}{\mathsf{H}}
+\newcommand*{\T}{\mathsf{T}}
+%\newcommand*{\T}{\mkern-1mu{}_{}^{\scriptscriptstyle\top}\mkern-4mu}
+\newcommand*{\Rev}{\mathsf{R}}
+\newcommand{\conj}[1]{\overline{ #1 }}
+
+% CUSTOM ALPHABETS
+\renewcommand{\S}{\Sigma}
+\newcommand{\Ss}{\Sigma^*}
+\newcommand{\Sp}{\Sigma^+}
+\newcommand{\Sbool}{\Sigma_{\text{bool}}}
+\newcommand{\Ssbool}{(\Sigma_{\text{bool}})^*}
+\newcommand{\Slogic}{\Sigma_{\text{logic}}}
+\newcommand{\Sslogic}{(\Sigma_{\text{logic}})^*}
+\newcommand{\Slat}{\Sigma_{\text{lat}}}
+\newcommand{\Sslat}{(\Sigma_{\text{lat}})^*}
+\newcommand{\Stastatur}{\Sigma_{\text{Tastatur}}}
+\newcommand{\Sstastatur}{(\Sigma_{\text{Tastatur}})^*}
+\newcommand{\Sm}{\Sigma_{m}}
+\newcommand{\Ssm}{\Sigma_{m}^*}
+\newcommand{\ZO}{\{0,1\}}
+\newcommand{\ZOs}{\{0,1\}^*}
+\newcommand{\hdelta}{\hat\delta}
+
+% OPERATORS
+% TODO: Should I design these as braces?
+\DeclareMathOperator{\id}{\text{id}}
+\DeclareMathOperator{\Kon}{\text{Kon}}
+\DeclareMathOperator{\cost}{\text{cost}}
+\DeclareMathOperator{\goal}{\text{goal}}
+\DeclareMathOperator{\Opt}{\text{Opt}}
+\DeclareMathOperator{\Bin}{\text{Bin}}
+\DeclareMathOperator{\Nummer}{\text{Nummer}}
+\DeclareMathOperator{\Prim}{\text{Prim}}
+\DeclareMathOperator{\Kl}{\text{Kl}}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\glb}{glb}
+\DeclareMathOperator{\lub}{lub}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\Cost}{Cost}
+\DeclareMathOperator{\order}{order}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\cond}{cond}
+\DeclareMathOperator{\nnz}{nnz}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Count}{Count}
+\DeclareMathOperator{\Spur}{Spur}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\triu}{triu}
+\DeclareMathOperator{\cumsum}{cumsum}
+\DeclareMathOperator{\vectorize}{vectorize}
+\DeclareMathOperator{\matrixfy}{matrixfy}
+\DeclareMathOperator{\circul}{circul}
+\DeclareMathOperator{\dft}{dft}
+\DeclareMathOperator{\invdft}{invdft}
+\DeclareMathOperator{\ones}{ones}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\renewcommand\div{\operatorname{div}}
+\DeclareMathOperator{\rot}{rot}
+\DeclareMathOperator{\cis}{cis}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Hess}{Hess}
+\newcommand{\laplace}{\Delta}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\even}{even}
+\DeclareMathOperator{\Proj}{Proj}
+
+% CRYPTOGRAPHY
+\DeclareMathOperator{\concat}{ || }
+\DeclareMathOperator{\Enc}{Enc}
+\DeclareMathOperator{\Dec}{Dec}
+\DeclareMathOperator{\Gen}{Gen}
+\DeclareMathOperator{\Tag}{Tag}
+\DeclareMathOperator{\Vrfy}{Vrfy}
+\DeclareMathOperator{\MAC}{\text{MAC}}
+\newcommand{\AdvPRG}[2][]{\text{Adv}_{\text{PRG}}\left[ #2 \right]}
+\newcommand{\yes}{\text{yes}}
+\newcommand{\no}{\text{no}}
+\newcommand{\forallPPTTM}{%
+\underset{\mathclap{\substack{\text{\tiny prob. poly-}\\
+\text{\tiny time TM}}}}{\forall}}
+\newcommand{\forallPTAdv}{%
+\underset{\mathclap{\substack{\text{\tiny poly-time}\\
+\text{\tiny Adversaries}}}}{\forall}}
+
+% OPERATORS (OVERRIDDEN)
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+
+% RELATIONAL ALGEBRA 
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\sch}{sch}
+\newcommand{\dto}{\stackrel{\bullet}{\to}}
+\newcommand{\join}{\bowtie}
+\newcommand{\lojoin}{{\tiny \textifsym{d|><|}}}
+\newcommand{\rojoin}{{\tiny \textifsym{|><|d}}}
+\newcommand{\fojoin}{{\tiny \textifsym{d|><|d}}}
+\newcommand{\lsjoin}{\ltimes}
+\newcommand{\rsjoin}{\rtimes}
+
+% RELATIONS
+\newcommand{\mbeq}{\stackrel{!}{=}}
+\newcommand{\xor}{\mathrel{\text{xor}}}
+\newcommand{\relid}{\mathrel{\id}}
+\newcommand{\relrho}{\mathrel{\rho}}
+\newcommand{\relsigma}{\mathrel{\sigma}}
+\newcommand{\reltheta}{\mathrel{\theta}}
+\newcommand{\relsim}{\mathrel{\sim}}
+\newcommand{\relf}{\mathrel{f}}
+
+% RELATIONS (INVERSES)
+\newcommand{\invrelid}{\mathrel{\widehat{\id}}}
+\newcommand{\invrelrho}{\mathrel{\widehat{\rho}}}
+\newcommand{\invrelsigma}{\mathrel{\widehat{\sigma}}}
+\newcommand{\invreltheta}{\mathrel{\widehat{\theta}}}
+\newcommand{\invrelsim}{\mathrel{\widehat{\sim}}}
+\newcommand{\invrelf}{\mathrel{\widehat{f}}}
+
+% CUSTOM RELATIONS
+\DeclareRobustCommand{\step}[2][]{\mathrel{\drawstep{#1}{#2}}}
+\newcommand{\drawstep}[2]{%
+  \vcenter{\hbox{%
+    \setlength{\unitlength}{1em}%
+    \begin{picture}(1,1)
+    \roundcap
+    \put(0,0){\line(0,1){1}}
+    \put(0,0.5){\line(1,0){0.95}}
+    \put(0.5,0){\makebox[0pt]{\text{\smaller$\scriptscriptstyle#2$}}}
+    \put(0.5,0.6){\makebox[0pt]{\text{\smaller$#1$}}}
+    \end{picture}%
+  }}%
+}
+
+% LINEAR TEMPORAL LOGIC (LTL)
+\newcommand{\until}{\texttt{\,\hstretch{0.7}{\boldsymbol{\cup}}\,}}
+\newcommand{\next}{\Circle}
+\newcommand{\eventually}{\Diamond}
+\newcommand{\always}{\square}
+
+% GLOBAL MATRICES AND VECTOR SETTINGS
+\newcommand{\boldm}[1] {\mathversion{bold}#1\mathversion{normal}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+% VECTORS (LATIN)
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\vd}{\vec{d}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vf}{\vec{f}}
+\newcommand{\vg}{\vec{g}}
+\newcommand{\vh}{\vec{h}}
+\newcommand{\vi}{\vec{i}}
+\newcommand{\vj}{\vec{j}}
+\newcommand{\vk}{\vec{k}}
+\newcommand{\vl}{\vec{l}}
+\newcommand{\vm}{\vec{m}}
+\newcommand{\vn}{\vec{n}}
+\newcommand{\vo}{\vec{o}}
+\newcommand{\vp}{\vec{p}}
+\newcommand{\vq}{\vec{q}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vs}{\vec{s}}
+\newcommand{\vt}{\vec{t}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vz}{\vec{z}}
+
+% VECTORS (LATIN) WITH TILDE ACCENT
+\newcommand{\vta}{\widetilde{\vec{a}}}
+\newcommand{\vtb}{\widetilde{\vec{b}}}
+\newcommand{\vtc}{\widetilde{\vec{c}}}
+\newcommand{\vtd}{\widetilde{\vec{d}}}
+\newcommand{\vte}{\widetilde{\vec{e}}}
+\newcommand{\vtf}{\widetilde{\vec{f}}}
+\newcommand{\vtg}{\widetilde{\vec{g}}}
+\newcommand{\vth}{\widetilde{\vec{h}}}
+\newcommand{\vti}{\widetilde{\vec{i}}}
+\newcommand{\vtj}{\widetilde{\vec{j}}}
+\newcommand{\vtk}{\widetilde{\vec{k}}}
+\newcommand{\vtl}{\widetilde{\vec{l}}}
+\newcommand{\vtm}{\widetilde{\vec{m}}}
+\newcommand{\vtn}{\widetilde{\vec{n}}}
+\newcommand{\vto}{\widetilde{\vec{o}}}
+\newcommand{\vtp}{\widetilde{\vec{p}}}
+\newcommand{\vtq}{\widetilde{\vec{q}}}
+\newcommand{\vtr}{\widetilde{\vec{r}}}
+\newcommand{\vts}{\widetilde{\vec{s}}}
+\newcommand{\vtt}{\widetilde{\vec{t}}}
+\newcommand{\vtu}{\widetilde{\vec{u}}}
+\newcommand{\vtv}{\widetilde{\vec{v}}}
+\newcommand{\vtw}{\widetilde{\vec{w}}}
+\newcommand{\vtx}{\widetilde{\vec{x}}}
+\newcommand{\vty}{\widetilde{\vec{y}}}
+\newcommand{\vtz}{\widetilde{\vec{z}}}
+
+% VECTORS (LATIN) WITH HAT ACCENT
+\newcommand{\vha}{\widehat{\vec{a}}}
+\newcommand{\vhb}{\widehat{\vec{b}}}
+\newcommand{\vhc}{\widehat{\vec{c}}}
+\newcommand{\vhd}{\widehat{\vec{d}}}
+\newcommand{\vhe}{\widehat{\vec{e}}}
+\newcommand{\vhf}{\widehat{\vec{f}}}
+\newcommand{\vhg}{\widehat{\vec{g}}}
+\newcommand{\vhh}{\widehat{\vec{h}}}
+\newcommand{\vhi}{\widehat{\vec{i}}}
+\newcommand{\vhj}{\widehat{\vec{j}}}
+\newcommand{\vhk}{\widehat{\vec{k}}}
+\newcommand{\vhl}{\widehat{\vec{l}}}
+\newcommand{\vhm}{\widehat{\vec{m}}}
+\newcommand{\vhn}{\widehat{\vec{n}}}
+\newcommand{\vho}{\widehat{\vec{o}}}
+\newcommand{\vhp}{\widehat{\vec{p}}}
+\newcommand{\vhq}{\widehat{\vec{q}}}
+\newcommand{\vhr}{\widehat{\vec{r}}}
+\newcommand{\vhs}{\widehat{\vec{s}}}
+\newcommand{\vht}{\widehat{\vec{t}}}
+\newcommand{\vhu}{\widehat{\vec{u}}}
+\newcommand{\vhv}{\widehat{\vec{v}}}
+\newcommand{\vhw}{\widehat{\vec{w}}}
+\newcommand{\vhx}{\widehat{\vec{x}}}
+\newcommand{\vhy}{\widehat{\vec{y}}}
+\newcommand{\vhz}{\widehat{\vec{z}}}
+
+% VECTORS (GREEK)
+\newcommand{\valpha}{\boldsymbol{\alpha}}
+\newcommand{\vbeta}{\boldsymbol{\beta}}
+\newcommand{\vgamma}{\boldsymbol{\gamma}}
+\newcommand{\vdelta}{\boldsymbol{\delta}}
+\newcommand{\vepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\vvarepsilon}{\boldsymbol{\varepsilon}}
+\newcommand{\vzeta}{\boldsymbol{\zeta}}
+\newcommand{\veta}{\boldsymbol{\eta}}
+\newcommand{\vtheta}{\boldsymbol{\theta}}
+\newcommand{\viota}{\boldsymbol{\iota}}
+\newcommand{\vkappa}{\boldsymbol{\kappa}}
+\newcommand{\vlambda}{\boldsymbol{\lambda}}
+\newcommand{\vmu}{\boldsymbol{\mu}}
+\newcommand{\vnu}{\boldsymbol{\nu}}
+\newcommand{\vxi}{\boldsymbol{\xi}}
+% omikron is just latin 'o'
+\newcommand{\vpi}{\boldsymbol{\pi}}
+\newcommand{\vrho}{\boldsymbol{\rho}}
+\newcommand{\vsigma}{\boldsymbol{\sigma}}
+\newcommand{\vtau}{\boldsymbol{\tau}}
+\newcommand{\vupsilon}{\boldsymbol{\upsilon}}
+\newcommand{\vphi}{\boldsymbol{\phi}}
+\newcommand{\vvarphi}{\boldsymbol{\varphi}}
+\newcommand{\vchi}{\boldsymbol{\chi}}
+\newcommand{\vpsi}{\boldsymbol{\psi}}
+\newcommand{\vomega}{\boldsymbol{\omega}}
+
+% VECTORS (GREEK) WITH TILDE ACCENT
+\newcommand{\vtalpha}{\widetilde{\valpha}}
+\newcommand{\vtbeta}{\widetilde{\vbeta}}
+\newcommand{\vtgamma}{\widetilde{\vgamma}}
+\newcommand{\vtdelta}{\widetilde{\vdelta}}
+\newcommand{\vtepsilon}{\widetilde{\vepsilon}}
+\newcommand{\vtvarepsilon}{\widetilde{\vvarepsilon}}
+\newcommand{\vtzeta}{\widetilde{\vzeta}}
+\newcommand{\vteta}{\widetilde{\veta}}
+\newcommand{\vttheta}{\widetilde{\vtheta}}
+\newcommand{\vtiota}{\widetilde{\viota}}
+\newcommand{\vtkappa}{\widetilde{\vkappa}}
+\newcommand{\vtlambda}{\widetilde{\vlambda}}
+\newcommand{\vtmu}{\widetilde{\vmu}}
+\newcommand{\vtnu}{\widetilde{\vnu}}
+\newcommand{\vtxi}{\widetilde{\vxi}}
+% omikron is just latin 'o'
+\newcommand{\vtpi}{\widetilde{\vpi}}
+\newcommand{\vtrho}{\widetilde{\vrho}}
+\newcommand{\vtsigma}{\widetilde{\vsigma}}
+\newcommand{\vttau}{\widetilde{\vtau}}
+\newcommand{\vtupsilon}{\widetilde{\vupsilon}}
+\newcommand{\vtphi}{\widetilde{\vphi}}
+\newcommand{\vtvarphi}{\widetilde{\vvarphi}}
+\newcommand{\vtchi}{\widetilde{\vchi}}
+\newcommand{\vtpsi}{\widetilde{\vpsi}}
+\newcommand{\vtomega}{\widetilde{\vomega}}
+
+% VECTORS (GREEK) WITH HAT ACCENT
+\newcommand{\vhalpha}{\widehat{\valpha}}
+\newcommand{\vhbeta}{\widehat{\vbeta}}
+\newcommand{\vhgamma}{\widehat{\vgamma}}
+\newcommand{\vhdelta}{\widehat{\vdelta}}
+\newcommand{\vhepsilon}{\widehat{\vepsilon}}
+\newcommand{\vhvarepsilon}{\widehat{\vvarepsilon}}
+\newcommand{\vhzeta}{\widehat{\vzeta}}
+\newcommand{\vheta}{\widehat{\veta}}
+\newcommand{\vhtheta}{\widehat{\vtheta}}
+\newcommand{\vhiota}{\widehat{\viota}}
+\newcommand{\vhkappa}{\widehat{\vkappa}}
+\newcommand{\vhlambda}{\widehat{\vlambda}}
+\newcommand{\vhmu}{\widehat{\vmu}}
+\newcommand{\vhnu}{\widehat{\vnu}}
+\newcommand{\vhxi}{\widehat{\vxi}}
+% omikron is just latin 'o'
+\newcommand{\vhpi}{\widehat{\vpi}}
+\newcommand{\vhrho}{\widehat{\vrho}}
+\newcommand{\vhsigma}{\widehat{\vsigma}}
+\newcommand{\vhtau}{\widehat{\vthau}}
+\newcommand{\vhupsilon}{\widehat{\vupsilon}}
+\newcommand{\vhphi}{\widehat{\vphi}}
+\newcommand{\vhvarphi}{\widehat{\vvarphi}}
+\newcommand{\vhchi}{\widehat{\vchi}}
+\newcommand{\vhpsi}{\widehat{\vpsi}}
+\newcommand{\vhomega}{\widehat{\vomega}}
+
+% MATRICES (LATIN)
+\newcommand{\MA}{\mat{A}}
+\newcommand{\MB}{\mat{B}}
+\newcommand{\MC}{\mat{C}}
+\newcommand{\MD}{\mat{D}}
+\newcommand{\ME}{\mat{E}}
+\newcommand{\MF}{\mat{F}}
+\newcommand{\MG}{\mat{G}}
+\newcommand{\MH}{\mat{H}}
+\newcommand{\MI}{\mat{I}}
+\newcommand{\MJ}{\mat{J}}
+\newcommand{\MK}{\mat{K}}
+\newcommand{\ML}{\mat{L}}
+\newcommand{\MM}{\mat{M}}
+\newcommand{\MN}{\mat{N}}
+\newcommand{\MO}{\mat{0}}
+\newcommand{\MP}{\mat{P}}
+\newcommand{\MQ}{\mat{Q}}
+\newcommand{\MR}{\mat{R}}
+\newcommand{\MS}{\mat{S}}
+\newcommand{\MT}{\mat{T}}
+\newcommand{\MU}{\mat{U}}
+\newcommand{\MV}{\mat{V}}
+\newcommand{\MW}{\mat{W}}
+\newcommand{\MX}{\mat{X}}
+\newcommand{\MY}{\mat{Y}}
+\newcommand{\MZ}{\mat{Z}}
+
+% MATRICES (LATIN) TILDE
+\newcommand{\MtA}{\widetilde{\mat{A}}}
+\newcommand{\MtB}{\widetilde{\mat{B}}}
+\newcommand{\MtC}{\widetilde{\mat{C}}}
+\newcommand{\MtD}{\widetilde{\mat{D}}}
+\newcommand{\MtE}{\widetilde{\mat{E}}}
+\newcommand{\MtF}{\widetilde{\mat{F}}}
+\newcommand{\MtG}{\widetilde{\mat{G}}}
+\newcommand{\MtH}{\widetilde{\mat{H}}}
+\newcommand{\MtI}{\widetilde{\mat{I}}}
+\newcommand{\MtJ}{\widetilde{\mat{J}}}
+\newcommand{\MtK}{\widetilde{\mat{K}}}
+\newcommand{\MtL}{\widetilde{\mat{L}}}
+\newcommand{\MtM}{\widetilde{\mat{M}}}
+\newcommand{\MtN}{\widetilde{\mat{N}}}
+\newcommand{\MtO}{\widetilde{\mat{0}}}
+\newcommand{\MtP}{\widetilde{\mat{P}}}
+\newcommand{\MtQ}{\widetilde{\mat{Q}}}
+\newcommand{\MtR}{\widetilde{\mat{R}}}
+\newcommand{\MtS}{\widetilde{\mat{S}}}
+\newcommand{\MtT}{\widetilde{\mat{T}}}
+\newcommand{\MtU}{\widetilde{\mat{U}}}
+\newcommand{\MtV}{\widetilde{\mat{V}}}
+\newcommand{\MtW}{\widetilde{\mat{W}}}
+\newcommand{\MtX}{\widetilde{\mat{X}}}
+\newcommand{\MtY}{\widetilde{\mat{Y}}}
+\newcommand{\MtZ}{\widetilde{\mat{Z}}}
+
+% MATRICES (LATIN) HAT
+\newcommand{\MhA}{\widehat{\mat{A}}}
+\newcommand{\MhB}{\widehat{\mat{B}}}
+\newcommand{\MhC}{\widehat{\mat{C}}}
+\newcommand{\MhD}{\widehat{\mat{D}}}
+\newcommand{\MhE}{\widehat{\mat{E}}}
+\newcommand{\MhF}{\widehat{\mat{F}}}
+\newcommand{\MhG}{\widehat{\mat{G}}}
+\newcommand{\MhH}{\widehat{\mat{H}}}
+\newcommand{\MhI}{\widehat{\mat{I}}}
+\newcommand{\MhJ}{\widehat{\mat{J}}}
+\newcommand{\MhK}{\widehat{\mat{K}}}
+\newcommand{\MhL}{\widehat{\mat{L}}}
+\newcommand{\MhM}{\widehat{\mat{M}}}
+\newcommand{\MhN}{\widehat{\mat{N}}}
+\newcommand{\MhO}{\widehat{\mat{0}}}
+\newcommand{\MhP}{\widehat{\mat{P}}}
+\newcommand{\MhQ}{\widehat{\mat{Q}}}
+\newcommand{\MhR}{\widehat{\mat{R}}}
+\newcommand{\MhS}{\widehat{\mat{S}}}
+\newcommand{\MhT}{\widehat{\mat{T}}}
+\newcommand{\MhU}{\widehat{\mat{U}}}
+\newcommand{\MhV}{\widehat{\mat{V}}}
+\newcommand{\MhW}{\widehat{\mat{W}}}
+\newcommand{\MhX}{\widehat{\mat{X}}}
+\newcommand{\MhY}{\widehat{\mat{Y}}}
+\newcommand{\MhZ}{\widehat{\mat{Z}}}
+
+% MATRICES (GREEK)
+\newcommand{\MGamma}{\mat{\Gamma}}
+\newcommand{\MDelta}{\mat{\Delta}}
+\newcommand{\MTheta}{\mat{\Theta}}
+\newcommand{\MLambda}{\mat{\Lambda}}
+\newcommand{\MXi}{\mat{\Xi}}
+\newcommand{\MPi}{\mat{\Pi}}
+\newcommand{\MSigma}{\mat{\Sigma}}
+\newcommand{\MUpsilon}{\mat{\Upsilon}}
+\newcommand{\MPhi}{\mat{\Phi}}
+\newcommand{\MPsi}{\mat{\Psi}}
+\newcommand{\MOmega}{\mat{\Omega}}
+
+% MATRICES (GREEK) TILDE
+\newcommand{\MtGamma}{\widetilde{\MGamma}}
+\newcommand{\MtDelta}{\widetilde{\MDelta}}
+\newcommand{\MtTheta}{\widetilde{\MTheta}}
+\newcommand{\MtLambda}{\widetilde{\MLambda}}
+\newcommand{\MtXi}{\widetilde{\MXi}}
+\newcommand{\MtPi}{\widetilde{\MPi}}
+\newcommand{\MtSigma}{\widetilde{\MSigma}}
+\newcommand{\MtUpsilon}{\widetilde{\MUpsilon}}
+\newcommand{\MtPhi}{\widetilde{\MPhi}}
+\newcommand{\MtPsi}{\widetilde{\MPsi}}
+\newcommand{\MtOmega}{\widetilde{\MOmega}}
+
+% MATRICES (GREEK) HAT
+\newcommand{\MhGamma}{\widehat{\MGamma}}
+\newcommand{\MhDelta}{\widehat{\MDelta}}
+\newcommand{\MhTheta}{\widehat{\MTheta}}
+\newcommand{\MhLambda}{\widehat{\MLambda}}
+\newcommand{\MhXi}{\widehat{\MXi}}
+\newcommand{\MhPi}{\widehat{\MPi}}
+\newcommand{\MhSigma}{\widehat{\MSigma}}
+\newcommand{\MhUpsilon}{\widehat{\MUpsilon}}
+\newcommand{\MhPhi}{\widehat{\MPhi}}
+\newcommand{\MhPsi}{\widehat{\MPsi}}
+\newcommand{\MhOmega}{\widehat{\MOmega}}
+
+% MATRIX SPACING BARS (for representing row/column-vectors)
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{4ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{4ex}{0.5pt}}
+\newcommand*{\svertbar}{\rule[-0.5ex]{0.5pt}{2ex}}
+
+% CUSTOM NUMERICS
+\newcommand{\EPS}{\text{EPS}}
+\DeclareMathOperator{\rd}{rd}
+\newcommand{\op}{\mathbin{\text{op}}}
+\newcommand{\mop}{\mathbin{\widetilde{\text{op}}}}
+
+
+% TILDE CHARACTERS
+\newcommand{\wta}{\widetilde{a}}
+\newcommand{\wtb}{\widetilde{b}}
+\newcommand{\wtc}{\widetilde{c}}
+\newcommand{\wtd}{\widetilde{d}}
+\newcommand{\wte}{\widetilde{e}}
+\newcommand{\wtf}{\widetilde{f}}
+\newcommand{\wtg}{\widetilde{g}}
+\newcommand{\wth}{\widetilde{h}}
+\newcommand{\wti}{\widetilde{i}}
+\newcommand{\wtj}{\widetilde{j}}
+\newcommand{\wtk}{\widetilde{k}}
+\newcommand{\wtl}{\widetilde{l}}
+\newcommand{\wtm}{\widetilde{m}}
+\newcommand{\wtn}{\widetilde{n}}
+\newcommand{\wto}{\widetilde{o}}
+\newcommand{\wtp}{\widetilde{p}}
+\newcommand{\wtq}{\widetilde{q}}
+\newcommand{\wtr}{\widetilde{r}}
+\newcommand{\wts}{\widetilde{s}}
+\newcommand{\wtt}{\widetilde{t}}
+\newcommand{\wtu}{\widetilde{u}}
+\newcommand{\wtv}{\widetilde{v}}
+\newcommand{\wtw}{\widetilde{w}}
+\newcommand{\wtx}{\widetilde{x}}
+\newcommand{\wty}{\widetilde{y}}
+\newcommand{\wtz}{\widetilde{z}}
+\newcommand{\wtA}{\widetilde{A}}
+\newcommand{\wtB}{\widetilde{B}}
+\newcommand{\wtC}{\widetilde{C}}
+\newcommand{\wtD}{\widetilde{D}}
+\newcommand{\wtE}{\widetilde{E}}
+\newcommand{\wtF}{\widetilde{F}}
+\newcommand{\wtG}{\widetilde{G}}
+\newcommand{\wtH}{\widetilde{H}}
+\newcommand{\wtI}{\widetilde{I}}
+\newcommand{\wtJ}{\widetilde{J}}
+\newcommand{\wtK}{\widetilde{K}}
+\newcommand{\wtL}{\widetilde{L}}
+\newcommand{\wtM}{\widetilde{M}}
+\newcommand{\wtN}{\widetilde{N}}
+\newcommand{\wtO}{\widetilde{O}}
+\newcommand{\wtP}{\widetilde{P}}
+\newcommand{\wtQ}{\widetilde{Q}}
+\newcommand{\wtR}{\widetilde{R}}
+\newcommand{\wtS}{\widetilde{S}}
+\newcommand{\wtT}{\widetilde{T}}
+\newcommand{\wtU}{\widetilde{U}}
+\newcommand{\wtV}{\widetilde{V}}
+\newcommand{\wtW}{\widetilde{W}}
+\newcommand{\wtX}{\widetilde{X}}
+\newcommand{\wtY}{\widetilde{Y}}
+\newcommand{\wtZ}{\widetilde{Z}}
+
+% HAT CHARACTERS
+\newcommand{\wha}{\widehat{a}}
+\newcommand{\whb}{\widehat{b}}
+\newcommand{\whc}{\widehat{c}}
+\newcommand{\whd}{\widehat{d}}
+\newcommand{\whe}{\widehat{e}}
+\newcommand{\whf}{\widehat{f}}
+\newcommand{\whg}{\widehat{g}}
+\newcommand{\whh}{\widehat{h}}
+\newcommand{\whi}{\widehat{i}}
+\newcommand{\whj}{\widehat{j}}
+\newcommand{\whk}{\widehat{k}}
+\newcommand{\whl}{\widehat{l}}
+\newcommand{\whm}{\widehat{m}}
+\newcommand{\whn}{\widehat{n}}
+\newcommand{\who}{\widehat{o}}
+\newcommand{\whp}{\widehat{p}}
+\newcommand{\whq}{\widehat{q}}
+\newcommand{\whr}{\widehat{r}}
+\newcommand{\whs}{\widehat{s}}
+\newcommand{\wht}{\widehat{t}}
+\newcommand{\whu}{\widehat{u}}
+\newcommand{\whv}{\widehat{v}}
+\newcommand{\whw}{\widehat{w}}
+\newcommand{\whx}{\widehat{x}}
+\newcommand{\why}{\widehat{y}}
+\newcommand{\whz}{\widehat{z}}
+\newcommand{\whA}{\widehat{A}}
+\newcommand{\whB}{\widehat{B}}
+\newcommand{\whC}{\widehat{C}}
+\newcommand{\whD}{\widehat{D}}
+\newcommand{\whE}{\widehat{E}}
+\newcommand{\whF}{\widehat{F}}
+\newcommand{\whG}{\widehat{G}}
+\newcommand{\whH}{\widehat{H}}
+\newcommand{\whI}{\widehat{I}}
+\newcommand{\whJ}{\widehat{J}}
+\newcommand{\whK}{\widehat{K}}
+\newcommand{\whL}{\widehat{L}}
+\newcommand{\whM}{\widehat{M}}
+\newcommand{\whN}{\widehat{N}}
+\newcommand{\whO}{\widehat{O}}
+\newcommand{\whP}{\widehat{P}}
+\newcommand{\whQ}{\widehat{Q}}
+\newcommand{\whR}{\widehat{R}}
+\newcommand{\whS}{\widehat{S}}
+\newcommand{\whT}{\widehat{T}}
+\newcommand{\whU}{\widehat{U}}
+\newcommand{\whV}{\widehat{V}}
+\newcommand{\whW}{\widehat{W}}
+\newcommand{\whX}{\widehat{X}}
+\newcommand{\whY}{\widehat{Y}}
+\newcommand{\whZ}{\widehat{Z}}
+
+% ARGUMENT DOT
+\newcommand{\argdot}{\,\cdot\,}
+
+% BOXED TEXT
+\usepackage{environ}
+\NewEnviron{textbox}{
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{%
+\BODY
+}}
+\end{center}
+}
+
+% ALGORITHMS
+\usepackage[ruled,vlined]{algorithm2e}
+\SetKwProg{Fn}{Function}{}{}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\SetKwInput{KwIn}{In}
+\SetKwInput{KwOut}{Out}
+\SetKw{KwBreak}{break}
+
+% PROGRAM CODES
+% TODO DEFINE Programming language specific environments
+% which already include all the options (mathescape, etc.)
+\usepackage{listings}
+\usepackage{courier}
+
+% global program code settings
+\lstset{
+ language          = C++, % TODO: see above
+ basicstyle        = \bfseries\footnotesize\ttfamily,
+ keywordstyle      = \color{blue}\footnotesize\bfseries\ttfamily,
+ stringstyle       = \color{red}\footnotesize\ttfamily,
+ commentstyle      = \color{magenta}\footnotesize\ttfamily,
+ morecomment       = [l][\color{magenta}]{\#},
+ showstringspaces  = false,
+ breaklines        = true,
+ breakatwhitespace = true,
+ breakindent       = 2ex,
+ tabsize           = 2,
+ mathescape        = true
+}
+% global inline code settings
+\newcommand\inlinestyle{\lstset{
+ basicstyle        = \bfseries\small\ttfamily,
+ keywordstyle      = \color{blue}\bfseries\small\ttfamily,
+ stringstyle       = \color{red}\small\ttfamily,
+ commentstyle      = \color{magenta}\small\ttfamily
+}}
+
+% pseudo code environment
+% TODO: add math escaping to true here
+\lstnewenvironment{Code}[1][]{}{}        % boxed
+\newcommand{\code}[1]{{\inlinestyle\lstinline{#1}}}    % inline
+
+% C/C++ style for highlighting
+\newcommand\cppstyle{\lstset{
+ language=C++
+}}
+% C/C++ environments
+\lstnewenvironment{Cpp}[1][]{\cppstyle \lstset{#1}}{}
+\newcommand\Cppexternal[2][]{{\cppstyle \lstinputlisting[#1]{#2}}}
+\newcommand\cpp[1]{{\cppstyle\inlinestyle\lstinline!#1!}}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+ language=Python,
+ otherkeywords={self}             % Add keywords here
+}}
+% Python environments
+\lstnewenvironment{Python}[1][]{\pythonstyle \lstset{#1}}{}
+\newcommand\Pythonexternal[2][]{{\pythonstyle \lstinputlisting[#1]{#2}}}
+\newcommand\python[1]{{\pythonstyle\inlinestyle\lstinline!#1!}}
+
+
+% TODOS
+\iftoggle{greytext}{
+\newcommand{\todo}[1]{\textbf{TODO:} #1}
+}{
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO:} #1}}
+}
+
+% CUSTOM COMMANDS
+% TODO: fix the spacing issues
+% package for conditional actions
+\usepackage{xifthen}
+% color definitions
+\iftoggle{greytext}{
+\definecolor{custtitlecolor}{rgb}{1, 1, 1}
+\definecolor{defcolor}{rgb}{0.97,0.97,0.97}
+\definecolor{thmcolor}{rgb}{0.97,0.97,0.97}
+\definecolor{excolor}{rgb}{0.97,0.97,0.97}
+\definecolor{importantcolor}{rgb}{0.97,0.97,0.97}
+\definecolor{algcolor}{rgb}{0.97,0.97,0.97}
+}{
+\definecolor{custtitlecolor}{rgb}{0, 0, 0}
+\definecolor{defcolor}{rgb}{0.75, 1, 0.75}
+\definecolor{thmcolor}{rgb}{1, 0.75, 0.75}
+\definecolor{excolor}{rgb}{1, 0.95, 0.43}
+\definecolor{importantcolor}{rgb}{1, 0.55, 0}
+\definecolor{algcolor}{rgb}{0.9, 0.9, 0.99}
+}
+% conditional checks
+\newcommand{\emptyarg}[1][]{\ifthenelse{\isempty{#1}}{}{\ (#1)}}
+% custom commands with optional argument
+\newcommand{\Def}[1][]{%\colorbox{defcolor}{%
+\color{custtitlecolor}{\textbf{D.\emptyarg[#1]}}
+%}
+\kern+0.3ex}
+\newcommand{\Thm}[1][]{%\colorbox{thmcolor}{%
+\color{custtitlecolor}{\textbf{T.\emptyarg[#1]}}
+%}
+\kern+0.3ex}
+\newcommand{\Lem}[1][]{\colorbox{thmcolor}{%
+\color{custtitlecolor}{\textbf{L.\emptyarg[#1]}}}\kern+0.3ex}
+\newcommand{\Cor}[1][]{\colorbox{thmcolor}{%
+\color{custtitlecolor}{\textbf{C.\emptyarg[#1]}}}\kern+0.3ex}
+\newcommand{\Ex}[1][]{\colorbox{excolor}{%
+\color{custtitlecolor}{\textbf{Ex.\emptyarg[#1]}}}\kern+0.3ex}
+\newcommand{\Alg}[1][]{\colorbox{algcolor}{%
+\color{custtitlecolor}{\textbf{Alg. #1}}}\kern+0.3ex}
+% custom commands with no argument
+\newcommand{\Com}{\textbf{Com.} }
+\newcommand{\Note}{\textbf{Note.} }
+\newcommand{\Important}{\textbf{Important.} }
+\newcommand{\Attention}{\textbf{Attention.} }
+\newcommand{\Proof}{\textbf{Proof.} }
+\newcommand{\Intuition}{\textbf{Intuition.} }
+\newcommand{\Trick}[1][]{\textbf{Trick.\emptyarg[#1]}\kern+0.3ex}
+
+
+% CUSTOM TITLES
+\usepackage[explicit]{titlesec}
+\iftoggle{greytext}{
+% grey out sections
+\definecolor{sectioncolor}{rgb}{0.95,0.95,0.95}
+\definecolor{sectionbarcolor}{rgb}{0.98,0.98,0.98}
+\newcommand*{\mybox}[1]{%
+    \noindent\colorbox{sectionbarcolor}{%
+        \parbox{\dimexpr\columnwidth-2\fboxsep\relax}{%
+            \textcolor{white}{#1}}}}
+}{
+% use blue color
+\definecolor{sectioncolor}{rgb}{0,0,205}
+\newcommand*{\mybox}[1]{%
+    \noindent\colorbox{sectioncolor}{%
+        \parbox{\dimexpr\columnwidth-2\fboxsep\relax}{%
+            \textcolor{white}{#1}}}}
+}
+% Raised Rule Command:
+% - arg 1 (optional) how high to raise the rule
+% - arg 2 thickness of the rule
+\newcommand{\raisedrulefill}[2][0ex]{\leaders\hbox{\rule[#1]{1pt}{#2}}\hfill}
+
+% multi-line titles
+\def\maxwidth{.78\linewidth}
+\newsavebox\tempbox
+\def\testwidth#1{%
+\sbox{\tempbox}{#1}%
+  \ifdim\wd\tempbox<\maxwidth
+    \usebox{\tempbox}%
+  \else
+    \parbox{\maxwidth}{#1}%
+  \fi}
+
+% part title format
+% TODO: scale-up the letter
+\renewcommand\thepart{{\HUGE $\mathcal{\Alph{part}}$.}}
+\titleformat{\part}{\Huge\bfseries}{\color{sectioncolor}\thepart\, #1}{0em}{}
+% section title format
+\makeatletter
+\renewcommand\section{
+\@startsection {section}{1}{\z@}{0pt}{0pt}{\normalfont\bfseries\mybox}}
+\makeatother
+% subsection title format
+\titleformat{\subsection}{\bfseries}
+    {\color{sectioncolor}\rule[0.3ex]{0pt}{0pt}
+    \thesubsection\,\rule[0.3ex]{8pt}{1.5pt}\,}{0em}
+    {\color{sectioncolor}\testwidth{#1}\,\raisedrulefill[0.3ex]{1.5pt}}
+% subsubsection title format
+\titleformat{\subsubsection}{\bfseries}
+    {\color{sectioncolor}\rule[0.35ex]{0pt}{0pt}
+    \thesubsubsection\,\rule[0.35ex]{8pt}{0.5pt}\,}{0em}
+    {\color{sectioncolor}\testwidth{#1}\,\raisedrulefill[0.35ex]{0.5pt}}
+% title spacings
+\iftoggle{shortdocument}{
+\titlespacing*{\part}
+{0pt}{0ex plus 0ex minus 0ex}{0ex plus 0ex}
+\titlespacing*{\section}
+{0pt}{0ex plus 0ex minus 0ex}{0ex plus 0ex}
+\titlespacing*{\subsection}
+{0pt}{0ex plus 0ex minus 0ex}{0ex plus 0ex}
+\titlespacing*{\subsubsection}
+{0pt}{0ex plus 0ex minus 0ex}{0ex plus 0ex}
+}{
+\titlespacing*{\part}
+{0pt}{1.2ex plus 1ex minus .2ex}{0ex plus .2ex}
+\titlespacing*{\section}
+{0pt}{0.8ex plus 1ex minus .2ex}{0ex plus .2ex}
+\titlespacing*{\subsection}
+{0pt}{0.7ex plus 1ex minus .2ex}{0ex plus .2ex}
+\titlespacing*{\subsubsection}
+{0pt}{0.5ex plus 1ex minus .2ex}{0ex plus .2ex}
+}
+
+% TABLE OF CONTENT
+% remove table of contents title
+\makeatletter
+\renewcommand\tableofcontents{%
+    \@starttoc{toc}%
+}
+\makeatother
+
+% SEPARATORS
+\usepackage{dashrule}
+\newcommand{\sep}{\vspace{0pt}\noindent\hrule\vspace{0pt}}
+\newcommand{\ssep}{\hdashrule[1.1ex]{\linewidth}{0.1pt}{0.3mm}}
+
+% INTER-TITLES
+\newcommand{\intertitle}[1]{\rule[0.35ex]{5pt}{0.5pt}
+\textbf{#1} 
+\raisedrulefill[0.35ex]{0.5pt}
+}
+
+% TITLE
+\title{Machine Learning}
+\author{Summary - Fall 2017}
+\date{Andreas Bloch}
+
+\begin{document}
+\begin{landscape}
+
+
+\pagenumbering{gobble}
+
+% GREY TEXT FOR SUMMARIES
+\iftoggle{greytext}{%
+  % grey out text
+  \definecolor{lighttext}{rgb}{0.95,0.95,0.95}
+  \color{lighttext}
+}{
+  % show text with normal color
+}
+
+% EQUATION SPACING
+\iftoggle{shortdocument}{
+\setlength{\abovedisplayskip}{0pt}%
+\setlength{\belowdisplayskip}{0pt}%
+\setlength{\abovedisplayshortskip}{0pt}%
+\setlength{\belowdisplayshortskip}{0pt}%
+\setlength{\jot}{0pt}% Inter-equation spacing
+}{
+\setlength{\abovedisplayskip}{3pt}%
+\setlength{\belowdisplayskip}{3pt}%
+\setlength{\abovedisplayshortskip}{3pt}%
+\setlength{\belowdisplayshortskip}{3pt}%
+\setlength{\jot}{3pt}% Inter-equation spacing
+}
+
+\begin{multicols*}{3}
+\raggedcolumns
+
+\section{Probability}
+
+\begin{comment}
+Sum Rule \(P(X=x_i) = \sum_{j=1}^{J} p(X=x_i,Y=y_i)\)
+
+Product rule \(P(X, Y) = P(Y|X) P(X)\)
+
+Independence \(P(X, Y) = P(X)P(Y)\)
+
+Bayes' Rule \(P(Y|X) = \frac{P(X|Y)P(Y)}{P(X)} = 
+\frac{P(X|Y)P(Y)}{\sum\limits^k_{i=1}P(X|Y_i)P(Y_i)}\)
+\end{comment}
+
+Cond. Ind. 
+$
+\rX\perp\rY|Z
+\Longrightarrow
+\cProb{X,Y}{Z}=\cProb{X}{Z}\cProb{Y}{Z}
+$
+
+Cond. Ind.
+$
+\rX\perp\rY|Z
+\Longrightarrow
+\cProb{X}{Y,Z}=\cProb{X}{Z}
+$
+
+\sep
+
+$\Exp{\rX}=\int_{\cX} t \cdot f_X(t)\,dt=:\mu_X$
+
+\begin{gather*}
+\begin{align*}
+\textstyle{
+\Var{X}
+=\Exp{\left(X-\Exp{X}\right)^2}
+=\int_{\cX} (t-\Exp{\rX})^2 f_X(t)\,dt
+=
+\Exp{X^2}-\Exp{X}^2
+}
+\end{align*}
+\end{gather*}
+
+$
+\Cov{X,Y}=\int_{\cX}\int_{\cX}f(x,y)(x-\mu_x)(y-\mu_x)
+\,dx\,dy
+$
+
+\sep
+
+``$\MX^2=\MX\MX^T$''$\geq 0$ ((symmetric) positive semidefinite)
+
+$
+\Var{X}=\Exp{X^2}-\Exp{X}^2
+$
+
+$
+\Var{\MA\MX}=\MA\Var{\MX}\MA^\T
+$
+\quad
+$\Var{aX+b}=a^2\Var{X}$
+
+\begin{gather*}
+\begin{align*}
+\textstyle{
+\Var{\sum_{i=1}^n a_iX_i}
+=
+\sum_{i=1}^n a_i^2\Var{X_i}
++
+2\sum_{\substack{i,j},i<j}a_ia_j\Cov{X_i,X_j}
+}
+\end{align*}
+\end{gather*}
+
+\begin{gather*}
+\begin{align*}
+\textstyle{
+\Var{\sum_{i=1}^n a_iX_i}
+=
+\sum_{i=1}^n a_i^2\Var{X_i}
++
+\sum_{\substack{i,j},i\neq j}a_ia_j\Cov{X_i,X_j}
+}
+\end{align*}
+\end{gather*}
+
+\sep
+
+$
+\frac{\partial}{\partial t} \Prob{X\leq t}
+=
+\frac{\partial}{\partial t} F_X(t)
+=
+f_X(t)
+$
+(derivative of c.d.f. is p.d.f)
+
+$
+f_{\alpha Y}(z)
+=
+\frac{1}{\alpha}f_Y(\frac{z}{\alpha})
+$
+
+\sep
+
+Empirical CDF: $\hat{F}_n(t)=\frac{1}{n}\sum_{i=1}^n \ind{X_i\leq t}$
+
+Empirical PDF: $\hat{f}_n(t)=\frac{1}{n}\sum_{i=1}^n\delta(t-X_i)$ (continuous)
+
+Empirical PDF: $\hat{p}_n(t)=\frac{1}{n}\card{x=t}{x\in D}$ (discrete)
+
+\sep
+
+\Thm The MGF $\psi_{X}(t)=\Exp{e^{tX}}$ characterizes the distr. of a
+rv
+
+\begin{tabular}{@{}l@{}l|l@{}l@{}}
+$Be(p)$: & $pe^t+(1-p)$
+&
+$\cN(\mu,\sigma)$: & $\exp\left(\mu t + \frac{1}{2}\sigma^2 t^2\right)$
+\\
+$Bin(n,p)$:\, & $(pe^t + (1-p))^n$\,
+&
+$Gam(\alpha,\beta)$:\, & $\left(\frac{1}{a-\beta t}^\alpha\right)$ for
+$t<1/\beta$
+\\
+$Pois(\lambda)$: & $e^{\lambda(e^t -1)}$
+\\
+\end{tabular}
+
+\sep
+
+\Thm If $\rX_1,\ldots,\rX_n$ are ind. rvs with 
+MGFs $M_{\rX_i}(t)=\Exp{e^{t\rX_i}}$, then the
+MGF of $\rY=\sum_{i=1}^n a_i\rX_i$
+is $M_{\rY}(t)=\prod_{i=1}^n M_{X_i}(a_it)$.
+
+\sep
+
+\Thm Let $X$, $Y$ be ind., then the p.d.f. of $Z=X+Y$ is the conv.
+of the p.d.f. of $X$ and $Y$:
+
+$
+f_Z(z) = \int_{\R} f_X(t)f_Y(z-t) \,dt
+= \int_{\R} f_X(z-t)f_Y(t) \,dt
+$
+
+\sep
+
+$
+\cN(\vx;\vmu,\MSigma)
+=
+\frac{1}{\sqrt{(2\pi)^d\det(\MSigma)}}
+\exp\left(-\frac{1}{2}(\vx-\vmu)^\T\MSigma^{-1}
+(\vx-\vmu)\right)
+$
+
+\begin{comment}
+$
+\cN(\vx;\vmu,\MSigma^{-1})
+\propto
+\exp\left(\frac{1}{2}(\vx-\vmu)^\T\MSigma(\vx-\vmu)\right)
+$
+\end{comment}
+
+$
+\hat{\mu}=\frac{1}{n}\sum_{i=1}^n \vx_i
+$
+\quad
+$
+\hat{\MSigma}=\frac{1}{n}\sum_{i=1}^n
+(\vx-\hat{\vmu})(\vx-\hat{\vmu})^\T
+$
+
+\sep
+
+\Thm
+$
+\Prob{
+\begin{bmatrix}
+\va_1\\
+\va_2\\
+\end{bmatrix}
+}
+=
+\cDist{\cN}{
+\begin{bmatrix}
+\va_1\\
+\va_2\\
+\end{bmatrix}
+}{
+\begin{bmatrix}
+\vu_1\\
+\vu_2\\
+\end{bmatrix},
+\begin{bmatrix}
+\MSigma_{11} & \MSigma_{12}\\
+\MSigma_{21} & \MSigma_{22}
+\end{bmatrix}
+}
+$\\
+$\va_1,\vu_1\in\R^{e}$, $\MSigma_{11}\in\R^{e\times e}$ p.s.d.
+$\MSigma_{12}\in\R^{e\times f}$ p.s.d.\\
+$\va_2,\vu_2\in\R^{f}$, $\MSigma_{22}\in\R^{f\times f}$ p.s.d.
+$\MSigma_{21}\in\R^{f\times e}$ p.s.d.\\
+\begin{gather*}
+\begin{align*}
+\cProb{\va_2}{\va_1=\vz}
+=
+\cDist{\cN}{
+\va_2
+}{
+\vu_2+\MSigma_{21}\MSigma_{11}^{-1}(\vz-\vu_1)
+,
+\MSigma_{22}-\MSigma_{21}\MSigma_{11}^{-1}\MSigma_{12}
+}
+\end{align*}
+\end{gather*}
+
+\sep
+
+\Thm[Chebyshev] Let $X$ be a rv with $\Exp[X]=\mu$ and variance
+$\Var{X}=\sigma^2<\infty$. Then for any $\epsilon > 0$, we have
+$
+\Prob{\abs{X-\mu}\geq\epsilon} \leq\frac{\sigma^2}{\epsilon^2}.
+$
+
+\sep
+
+\Thm[Cramer Rao Bound] If $\hat{\vtheta}$ is unb., cons. est., then
+
+$
+MSE(\hat{\theta})=\Exp{\left(\hat{\theta}-\theta\right)^2}\geq
+\frac{1}{\cI_n(\theta)}>
+0, \quad\text{where}
+$
+
+$
+\cI_n(\theta)=-\sum_{i=1}^n\Exp{\frac{\partial^2
+\log\left(\cProb{x_i}{\vtheta}\right)}{\partial \theta ^2}}.
+\quad\text{(Fisher Information)}
+$
+
+\sep
+
+\Def[Conditional Expected Risk] Given rv $X$
+
+$
+R(f,X) = \int_{\cY} L(Y,f(X)) \cProb{Y}{X} \,dY
+$
+
+\sep
+
+\Def[Total Expected Risk] for rvs $X,Y$
+\begin{gather*}
+\begin{align*}
+\textstyle
+R(f)&=\Exp[X]{R(f,X)}=\textstyle\int_{\cX} R(f,X) \Prob{X} \, dX
+=\Exp[X,Y]{L(Y,f(X))}.
+\end{align*}
+\end{gather*}
+
+\section{Matrix Calculus}
+
+$
+f(\vx)=f(\vx_0) + \nabla_{\vx}f(\vx_0)^\T(\vx-\vx_0)
+$\quad (2nd order Taylor Expan.)
+
+$\quad\qquad+\frac{1}{2}(\vx-\vx_0)^\T\text{Hess}(f;\vx_0)(\vx-\vx_0)+
+\BigO((\vx-\vx_0)^3)
+$
+
+$
+\text{Hess}(f;\vx_0)=\frac{\partial^2 f}{\partial \vx\partial\vx^\T}(\vx_0)
+$
+
+\sep
+
+$
+\frac{\partial}{\partial \vx}\left[\MA\vx\right] = \MA^\T
+$
+\quad
+$
+\frac{\partial}{\partial \vx}\left[\MA\vf(\vx)\right]
+=\MA^\T\frac{\partial}{\partial \vx}\left[\vf(\vx)\right]
+$
+
+$
+\frac{\partial}{\partial \vx}\left[\vx^\T\MA\vx\right] = 2\MA^\T\vx
+$
+\quad
+$
+\frac{\partial}{\partial \vx}\left[\norm{\vf(\vx)}_2^2\right]
+=
+2
+\frac{\partial}{\partial \vx}\left[\vf(\vx)\right]
+\vf(\vx)
+$
+
+\sep
+
+\Thm[Sylvester Criterion] A $d\times d$ matrix is positive semi-definite if and
+only if all the upper left $k\times k$ for $k=1,\ldots,d$ have a positive
+determinant.
+
+\section{Misc}
+
+\Thm[Jensen] $f$ convex/\tcr{concave}, $\forall i\colon\lambda_i\geq 0$,
+$\sum_{i=1}^n\lambda_i=1$
+
+$
+f\left(\sum_{i=1}^n\lambda_i\vx_i\right)
+\leq\mcr{/\geq}
+\sum_{i=1}^n\lambda_if\left(\vx_i\right)
+$
+
+Special case: $f(\Exp{X})\leq \Exp{f(X)}$.
+
+\sep
+
+\Thm[CSU] $\abs{\scprod{\vx,\vy}}^2\leq\scprod{\vx,\vx}\cdot\scprod{\vy,\vy}$
+
+Special case: $(\sum x_i y_i)^2\leq(\sum x_i^2)(\sum y_i)^2$
+
+Special case: $\Exp{XY}^2\leq\Exp{X^2}\Exp{Y^2}$
+
+\sep
+
+\textbf{Lag.:} $f(x,y)\, s.t.\, g(x,y) = c$
+\,
+$
+\mathcal{L}(x, y, \gamma) = f(x,y) - \gamma ( g(x,y)-c)
+$
+
+\section{Kernels}
+
+\Def[Kernel] Kernel functions $k(x,x')$ must satisfy (cf. properties of
+covariance matrices)
+\begin{enumerate}
+  \item Symmetry: $k(x,x')=k(x',x)$
+  \item Positive semi-definiteness (continuous case):\\
+  $\forall f\in
+  L_2\,\forall\Omega\subset\R\colon
+  \int_{\Omega}k(x,x')f(x)f(x')\,dx\,dx'\geq 0$
+  \item Positive semi-definiteness (discrete case):\\
+  For any $n\in\N$, and any set $S=\set{\vx_1,\ldots,\vx_n}$, the kernel (Gram)
+  matrix $\MK=(k(\vx_i,\vx_j))_{i,j=1}^n$ must be positive semidefinite
+  ($\forall\vx\colon\vx^\T\MK\vx\geq 0$).
+\end{enumerate}
+
+\sep
+
+\Thm[Comp. Rules] $k_1+k_2$ ; $k_1\cdot k_2$ ; $c\cdot k_1$ ($c>0$) ; $f(k_1)$
+where $f$ is a poly. w. pos. coeff., or the exp. func..
+
+\sep
+
+%\begin{center}
+\begin{tabular}{ll}
+\textbf{Kernel} $k(\vx,\vy)=$ & \textbf{Feature Map} $\vphi(\vx)$=\\
+$k_1(\vx,\vy)+k_2(\vx,\vy)$ & $(\vphi_1(\vx),\vphi_2(\vx))^\T$\\
+$c\cdot k_1(\vx,\vy)$ ($c>0$) & $\sqrt{c}\cdot\vphi_1(\vx)$\\
+$k_1(\vx,\vy)\cdot k_2(\vx,\vy)$ & 
+$(\phi_{1}(\vx)_i\cdot\phi_2(\vy)_j)^\T_{\text{ for }1\leq i\leq d_1, 1\leq
+j\leq d_2}$
+\\
+$\vx^\T\MA\vy$ $\MA$ p.s.d. & $\ML^\T\vx$, $\MA=\ML\ML^\T$\\
+$\vx^\T\MM^\T\MM\vx$, $\MM$ arbitrary & $\MM\vx$
+\end{tabular}
+%\end{center}
+
+\sep
+
+Linear \(k(x,y) = x^\top y\), 
+Polynomial \(k(x,y) = (x^\top y + 1)^d\)
+
+RBF \(k(x,y) = \exp(\frac{-\|x-y\|^2_2}{h^2})\),
+Sigmoid \(k(x,y) = \tanh(k x^\top y - b)\)
+
+\sep
+
+Proof Tricks: Counterexample, Prove by ``for arbitrary $n$, $x_1,\ldots,x_n$,
+$c_1,\ldots,c_n$ $\sum_i\sum_jc_ic_kk(x_i,x_j)\geq 0$'', constant kernel
+$k(x,y)=c$ is a kernel, find feature map and inner product.
+
+\section{Regression}
+
+\textbf{Problem} What is the optimal estimate of a function $f\colon\R^d\to\R$
+based on noisy data
+$
+y_i=f(x_i)+\epsilon_i
+$
+
+\textbf{Solution} the regression function
+\[
+f^*(x)=\cExp{Y}{X=x}=\textstyle\int_{\cY}y\cdot\cProb{y}{X=x}\,dy
+\]
+
+\subsection{Ridge Regression}
+
+$\vw^*=\argmin_{\vw}\norm{\vy-\MX\vw}_2^2 + \lambda \norm{\vw}_2^2 \quad
+(\lambda > 0, \text{ chosen via CV}) $
+
+$\vw^*=(\MX^\T\MX+\lambda\MI)^{-1}\MX^\T\vy$ \quad (always has a solution)
+
+$\vg_t =-2\MX^\T(\vy-\MX\vw_t) +2\lambda\vw_t$
+
+Note: Scale of the data matters for $\lambda$! ($\rightarrow$ normalize
+data)
+
+\sep
+
+$Y\sim\cN(\vw^\T\vx,\sigma^2)$,\quad $y_i=\vw^\T\vx_i+\epsilon$, \quad
+$\epsilon\sim\cN(0,\sigma^2)$
+
+$\cProb{Y=y}{\vx=\vx,\vtheta=(\vw,\sigma^2)}=\cN(y;h(\vx),\sigma^2)$,  
+$h(\vx)=\vw^\T\vx$
+
+Weights prior:
+$\vw\sim\cN(0,\beta^2\MI)$,\quad $w_i\sim\cN(0,\beta^2)$
+
+Maximizing $\cProb{\vw}{D}$ then leads to the connection
+$\lambda=\frac{\sigma^2}{\beta^2}$.
+
+\subsection{Bayesian Linear Regression}
+
+$
+\rY=\rvX^\T\vbeta+\epsilon$, $\epsilon\sim\cN(0,\sigma^2)
+$
+
+$
+\cProb{Y}{\rvX,\vbeta,\sigma}=\cN(\rvX^\T\vbeta,\sigma^2)
+\propto\exp\left(-\frac{1}{2\sigma^2}(\rY-\rvX^\T\vbeta)^2\right)
+$
+
+$
+\cProb{\vbeta}{\MLambda}=\cN(\vo,\MLambda^{-1})
+\propto
+\exp\left(-\frac{1}{2}\vbeta^\T\MLambda\vbeta\right)
+$
+
+\begin{gather*}
+\begin{align*}
+\cProb{\vbeta}{\MX,\vy,\MLambda,\sigma}
+=
+\frac{\cProb{\vy}{\MX,\vbeta,\MLambda,\sigma}\cProb{\vbeta}{\MX,\MLambda,\sigma}}{
+\cProb{\vy}{\MX,\MLambda,\sigma}}
+\propto
+\cProb{\vy}{\MX,\vbeta,\sigma}\cProb{\vbeta}{\MLambda}
+\end{align*}
+\end{gather*}
+
+$
+=\prod_{i=1}^n\cProb{y_i}{\vx_i,\vbeta,\sigma}\cProb{\vbeta}{\MLambda}
+=\cN(\vbeta;\vmu_{\vbeta},\MSigma_{\vbeta})
+$
+
+$
+\vmu_{\vbeta}=\left(\MX^\T\MX-\sigma^2\MLambda\right)^{-1}\MX^\T\vy,\quad
+\MSigma_{\vbeta}=\sigma^2\left(\MX^\T\MX+\sigma^2\MLambda\right)^{-1}
+$
+
+Special Case: Ridge Regression: $\MLambda=\lambda\MI$, $\sigma=1$
+
+\subsection{Kernelized Ridge Regression}
+
+\textbf{Insight} optimal $\vw^*$ lies in the span of the data.
+
+$\vw^*=\MX_\phi^\T\vz^*$ \, 
+\, ($\MK=\MX_\phi\MX_\phi^\T\in\R^{n\times n}$)
+
+$\vz^*=\argmin_{\vz} \snorm{\MK\vz-\vy}_2^2 + \lambda\vz^\T\MK\vz $
+
+\textbf{1) Closed form} $\vz^*=(\MX_\phi\MX_\phi^\T+\lambda\MI)^{-1}\vy
+=(\MK-\lambda\MI)^{-1}\vy$
+
+\textbf{2) Gradient descent} $\vg_t=2\MK^\T(\MK\vz-\vy) + 2 \lambda\MK\vz$
+
+\textbf{Prediction} $f(\vx)={\vw}^\T\phi(\vx)=\ldots=\sum_{i=1}^n
+z_ik(\vx_i,\vx)$
+
+\textbf{Bayesian Interpretation} Same as ridge regression, except that the
+hypothesis class for $\cH$ for $h$ (comp. of mean) may be different.
+
+\subsection{Sparse Regression: LASSO}
+
+Requires $\norm{\vw}_1\leq s$. Prior: $w_i\sim
+p(w_i;0,b)=\frac{1}{2b}\exp\left(-\frac{\abs{w_i-\mu}}{b}\right)$ where $\mu=0$,
+(connection: $\lambda=\frac{2\sigma^2}{b}$).
+
+\subsection{Ensemble of Regressions}
+
+\Thm The average of $B$ unbiased estimators $\hat{f}_i$ remains unbiased.
+
+$
+\Exp{\frac{1}{B}\sum_{i=1}^B \hat{f}_i(X)} - \theta = 0.
+$
+
+\sep
+
+\Thm The variance of am average of $B$ unbiased estimators, $(*)$ which have
+small covariances $\approx 0$, and similar variances $\approx\sigma^2$ my reduce the
+variance to $\sigma^2/B$.
+\begin{gather*}
+\begin{align*}
+\Var{\frac{1}{B}\sum_{i=1}^B \hat{f}_i(X)}
+=
+\frac{1}{B^2}\sum_{i=1}^B\Var{ \hat{f}_i(X)}
++
+\frac{1}{B^2}\sum_{\substack{i,j\\i\neq j}}^B\Cov{\hat{f}_i(X),\hat{f}_i(X)}
+\stackrel{(*)}{\approx}\frac{\sigma^2}{B}.
+\end{align*}
+\end{gather*}
+
+\subsection{Bias Variance for Squared Loss}
+
+\begin{gather*}
+\begin{flalign*}
+&\Exp[D]{
+ \Exp[\MX,Y]{(Y-\hat{h}_D(\MX))^2}
+}
+\qquad\left(\text{Note: }h^*(X)=\cExp[Y]{Y}{X}\right)
+\\
+&
+=
+\underbrace{
+\Exp[\MX]{
+\left(
+\Exp[D]{\hat{h}_D(\MX)}-
+h^*(\MX)
+\right)^2}
+}_{\text{Bias}^2}
++
+\underbrace{
+\Exp[\MX]{
+\Exp[D]{\left(\hat{h}_D(\MX)-\Exp[D']{\hat{h}_{D'}(\MX)}\right)^2}}
+}_{\text{Variance}}
+\\
+&+\Exp[\MX,Y]{\left(Y-h^*(\MX)\right)^2}
+\qquad
+\left(\text{Noise}\right)
+\end{flalign*}
+\end{gather*}
+
+Derivation: 1) $\pm\cExp[Y]{Y}{X}$ gives noise, 2) Prove vanishing cross-term,
+3) $\pm\Exp[D]{\hat{f}(X)}$ gives bias and variance
+
+\subsection{Gaussian Processes}
+
+$\rvY=\MX\vbeta+\vepsilon$, $\vepsilon\sim\cN_n(\vo,\sigma^2\MI_n)$,
+\,
+$\vbeta\sim\cN(\vo,\MLambda^{-1})$
+
+Since the outputs $\vy$ are a linear combination of normally distributed rvs
+$\vbeta$, they are jointly Gaussian themselves.
+
+$
+\Exp[\vbeta,\vepsilon]{\vy}
+=
+\Exp[\vbeta,\vepsilon]{\MX\vbeta+\vepsilon}
+=
+\MX\Exp[\vbeta]{\vbeta}
++\Exp[\vepsilon]{\vepsilon}
+=
+\MX\vo
++
+\vo
+=
+\vo.
+$
+
+$\Cov{\vy}
+=\Exp{\vy\vy^\T}
+=\Exp{(\MX\vbeta+\vepsilon)(\MX\vbeta+\vepsilon)^\T}
+=\MX\MLambda^{-1}\MX^\T+\sigma^2\MI.$
+
+Special case: $\Lambda^{-1}:=\lambda\MI$:
+$\Cov{\vy}=\lambda^{-1}(\MX\MX^\T+\lambda\sigma^2\MI_n)$.
+
+Then we can rewrite the joint distr. as $\vy\sim\cN(\vo,\MK+\sigma^2\MI)$
+
+\begin{comment}
+$
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}
+\sim
+\cN
+\left(
+\begin{pmatrix}
+0\\
+0\\
+\vdots\\
+0
+\end{pmatrix},
+\begin{pmatrix}
+k_{1,1} + \sigma^2 & k_{1,2} & \cdots & k_{1,n}\\
+k_{2,1} & k_{2,2} + \sigma^2 & \cdots & k_{2,n}\\
+\vdots & \vdots & \ddots & \vdots\\
+k_{n,1} & k_{n,2} & \cdots & k_{n,n}+ \sigma^2\\
+\end{pmatrix}
+\right),
+$
+\end{comment}
+
+where $k(\vx_i,\vx_j)=\vx_i^\T\MLambda^{-1}\vx_j$ is a so-called kernel
+function (could be replaced with others).
+
+$
+\text{Joint D.}\quad
+\cProb{
+\begin{pmatrix}
+\vy\\
+y_{n+1}
+\end{pmatrix}}{
+x_{n+1},\MX,\sigma
+}
+=
+\cDist{\cN}{
+\begin{pmatrix}
+\vy\\
+y_{n+1}
+\end{pmatrix}
+}{
+\vo,
+\begin{pmatrix}
+\MC_n & \vk\\
+\vk^\T & c
+\end{pmatrix}
+}
+$\\
+$\MK=k(\MX,\MX)$, 
+$\MC_n=\MK+\sigma^2\MI$,
+$c=k(x_{n+1},x_{n+1})+\sigma^2$,
+$\vk=k(x_{n+1},\MX)$\\
+$
+\text{Pred D.}\quad
+\cProb{y_{n+1}}{x_{n+1},\MX,\vy,\sigma}
+=
+\cDist{\cN}{
+y_{n+1}
+}{
+\vmu_{y_{n+1}},
+\sigma^2_{y_{n+1}}
+}
+$\\
+$\vmu_{y_{n+1}}=\vk^\T\MC_n^{-1}\vy=\vk^\T(\MK+\sigma^2\MI)^{-1}\vy$,
+$\sigma^2_{y_{n+1}}=c-\vk^\T\MC_{n}^{-1}\vk$
+
+\section{Classification}
+
+0/1 Loss  $w^* = \argmin_w \sum_{i=1}^n [y_i \neq sign(w^\top x_i)]$
+
+Perceptron $w^* = \argmin_w \sum_{i=1}^n [\max(0, y_i w^\top x_i)]$
+
+Exponential Loss $L(y,z)=\exp{-(2y-1)(2z-1)}$
+
+Logistic Loss $L(y,z)=\ln(1+\exp{-(2y-1)(2z-1)})$
+
+Dep. on appl. use $\vy\vw^\T\vx$ or $-(2y-1)(2z-1)$ as error
+
+\subsection{Generative VS Discriminative}
+
+\[
+\cProb{Y}{X}=\frac{\cProb{X}{Y}\Prob{Y}}{\sum_y \cProb{X}{Y}\Prob{Y}}
+\]
+\textbf{Generative:} Est. both $\Prob{Y}$ and $\cProb{X}{Y}$ then use Bayes.
+
+\textbf{Discr.:} Est. $\cProb{Y}{X}$ directly, fitting
+discr. f. $g(Y,X)$.
+
+\subsection{SVMs}
+
+\subsubsection{Primal, constrained}
+
+$
+\min_{w} w^\top w + C \sum_{i=1}^{n} \xi_i, \text{ s.t. } y_i w^\top x_i \geq 1 - \xi_i, \xi_i \geq 0
+$
+
+\subsubsection{Primal, unconstrained}
+
+$
+\min_{w} w^\top w + C \sum_{i=1}^{n} \max(0, 1-y_i w^\top x_i) \text{ (hinge loss)}
+$
+
+\subsubsection{Dual}
+
+$
+\max_{\alpha} \sum_{i=1}^{n} \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j x_i^\top x_j, \text{ s.t. } 0 \leq \alpha_i \leq C
+$
+
+\subsubsection{Dual to Primal}
+
+Dual to primal: $w^* = \sum_{i=1}^{n} \alpha^*_i y_i x_i$, $\alpha_i > 0$: support vector.
+
+\subsection{Kernelized SVMs}
+
+$
+\max_{\alpha} \sum_{i=1}^{n} \alpha_i - \frac{1}{2} \sum_{i,j} \alpha_i \alpha_j y_i y_j k(x_i, x_j), \text{ s.t. } 0 \geq \alpha_i \geq C
+$
+
+Classify: $y = sign(\sum_{i=1}^{n} \alpha_i y_i k(x_i, x))$
+
+\intertitle{How to find $a^T$?}
+
+$a = \{w_0,w\}$ used along $\widetilde{x} = \{1,x\}$
+
+Gradient Descent: $a(k+1) = a(k) - \eta(k) \nabla J(a(k))$
+
+Newton: 2nd ord. Taylor, where $\eta_{opt} = H^{-1}$,\,
+$H=\frac{\partial^2 J}{\partial a_i \partial a_j}$
+
+$J$ is the cost mat., popular: 
+Perceptron cost: $J_p (a) = \sum(-a^T \widetilde{x})$
+
+\subsection{Logistic Regression}
+
+$\cProb{Y=y}{\vx,\vw}=Ber(y;\sigma(\vw^\T\vx))
+=\frac{1}{1+e^{-y\vw^\T\vx}}=p_y$
+
+$\cProb{Y=+1}{\vx,\vw}=\sigma(\vw^\T\vx)=p_+$
+
+Gr. st. w. Gau. Pr.:
+$\vw\leftarrow\vw(1-2\lambda\eta_t) + \eta_t
+y\vx \chProb{Y=-y}{\vw,\vx}$
+
+\subsubsection{Multi-Class Logistic Regression}
+
+$\cProb{Y=i}{\vx,\vw_1,\ldots,\vw_c}=\frac{\exp(\vw_i^\T\vx)}{
+\sum_{j=1}^c \exp(\vw^\T_j\vx)
+}=p_i
+$
+
+\section{Multiclass Classification}
+
+\textbf{One-VS-All} $y=\argmax_{i\in\set{1,\ldots,c}}f_i(\vx)$
+
+\textbf{One-VS-One} $\binom{c}{2}$ bin. clf. for each
+$(i,j)\in\set{1,\ldots,c}^2$.
+
+$f_{(i,j)}\colon\cX\to\set{-1,+1}$ \, 
+$y=\argmax_{i\in\set{1,\ldots,c}}\sum_{\substack{j=1}{j\neq i}}^{c} 
+\ind{f_{(i,j)}(\vx)=+1}$.
+
+\begin{comment}
+\section{Bootstrapping}
+
+Sample creation with replacement. Compute mean error of samples, and variance.
+
+Bootstrapping works if for $n \rightarrow \infty$ the error of
+empirical\&bootstrap is the same as real\&empiricial
+
+P. of sample not to appear.: $(1-\frac{1}{n})^n$. Goes to
+$\frac{1}{e}$ for $n \rightarrow \infty$
+
+Multiplicity N sample to choose k times with replacement: $\binom{N-1+k}{k}$.
+In bootstrapping $N=k$
+\end{comment}
+
+\section{Jackknife}
+
+Method to compensate for syst. est. errors (bias reduction).
+
+\textbf{Goal:} Numerically estimate the bias of an estimator $\hat{S}_n$.
+
+$
+\tilde{S}_n=\frac{1}{n}\sum_{i=1}^n S^{-i}_{n-1}\quad \text{(LOO- Estimator)}
+$
+
+Then the est. for the bias of $\hat{S}_n$ is:
+$
+\text{bias}^{JK}=(n-1)(\tilde{S}_n-\hat{S}_n)
+$
+
+Then the unbiased estimate is $\hat{S}^{JK}=\hat{S}_n-\text{bias}^{JK}$.
+
+\section{Probabilistic Methods}
+
+$
+\underbrace{\cProb{\text{model } \theta}{\text{data } D}}_{\text{Posterior}}
+=
+\frac{
+\overbrace{\cProb{\text{data}}{\text{model}}}^{\text{Likelihood}}
+\times
+\overbrace{\Prob{\text{model}}}^{\text{Prior}}
+}{
+\underbrace{\Prob{\text{data}}}_{\text{Evidence}}
+}
+$
+
+\subsubsection{Maximum (Cond.) LH Est., (MLE)}
+
+\begin{gather*}
+\begin{flalign*}
+\vtheta^*&=\textstyle\argmax_{\vtheta}
+\chProb{y_1,\ldots,y_n}{\vx_1,\ldots,\vx_n,\vtheta}\\
+%&\stackrel{\text{i.i.d}}{=} \textstyle\argmax_{\vtheta} 
+%\textstyle\prod_{i=1}^n
+%\chProb{y_i}{\vx_i,\vtheta}
+%= \textstyle\argmax_{\vtheta} \textstyle\sum_{i=1}^n
+%\log\chProb{y_i}{\vx_i,\vtheta}\\
+&= \textstyle\argmin_{\vtheta} -\textstyle\sum_{i=1}^n
+\log\chProb{y_i}{\vx_i,\vtheta} = \textstyle\argmin_{\vtheta} \ldots 
+\text{insert, derivate}.&
+\end{flalign*}
+\end{gather*}
+
+\subsubsection{Maximum a Posteriori Estimate, (MAP)}
+\begin{gather*}
+\begin{flalign*}
+\vtheta^*&=\textstyle\argmax_{\vtheta} \cProb{\vtheta}{D}
+=\textstyle\argmax_{\vtheta}
+\cProb{\vtheta}{\vx_1,\ldots,\vx_n,y_1,\ldots,y_n}\\
+%&=\textstyle\argmax_{\vtheta} \frac{
+%\Prob{\vtheta}
+%\cProb{y_1,\ldots,y_n}{\vx_1,\ldots,\vx_n,\vtheta}
+%}{
+%\cProb{y_1,\ldots,y_n}{\vx_1,\ldots,\vx_n}
+%}\\
+%&=
+%\textstyle\argmax_{\vtheta} \Prob{\vtheta}
+%\cProb{y_1,\ldots,y_n}{\vx_1,\ldots,\vx_n,\vtheta}\\
+%&=
+%\textstyle\argmin_{\vtheta} -\log\Prob{\vtheta}
+%-\log \cProb{y_1,\ldots,y_n}{\vx_1,\ldots,\vx_n,\vtheta}\\
+&\stackrel{\text{\tiny i.i.d}}{=}
+\textstyle\argmin_{\vtheta} -\log\Prob{\vtheta}
+-\textstyle\sum_{i=1}^n\log \cProb{y_i}{\vx_i,\vtheta} 
+= \text{\ldots insert, derivate}&
+\end{flalign*}
+\end{gather*}
+
+\section{Ensemble Methods}
+
+Use combination of simple hyp. (weak lerners) that are sufficiently
+diverse to prod. a valid sol. with low bias and var.
+
+\textbf{Bagging}: train weak l. on bootstr. sets with equal weights. \\
+
+\textbf{Boosting}: train on all data, but reweigh misclassified samples higher
+and use error-sensitive reweighting of classifiers.
+
+\begin{comment}
+\begin{algorithm}[H]
+\caption{Bagging}
+\DontPrintSemicolon
+\KwIn: $\cZ=\set{(x_1,y_1),\ldots,(x_n,y_n)}$\;
+\For{$b\gets 1$ \KwTo $B$}{
+	$\cZ^{\star b}\gets b$-th bootstrap sample from $\cZ$ (i.i.d., with repl.)\;
+	Construct classifer $c_b$ based on $\cZ^{\star b}$\;
+}
+\Return ensemble clf. $\hat{c}_B(x)=\sign(\sum_{i=1}^Bc_i(x))$ (majority)\;
+\end{algorithm}
+\end{comment}
+
+\sep
+
+Left out: Decision trees (Stump: $h(x) = sign(a x_i - t)$), Random forest:
+bagging of trees.
+
+
+\begin{comment}
+\subsubsection{Decision Trees}
+\textbf{Stumps}: partition linearly along 1 axis
+$
+h(x) = sign(a x_i - t)
+$
+
+\textbf{Decision Tree}: recursive tree of stumps, leaves have labels. To train,
+either label if leaf's data is pure enough, or split data based on score.
+
+\subsubsection{Random Forests}
+
+Strategy for Bagging Trees: Loop: 1) Draw bootstrap sample, 2) Pick random
+features $(\approx\sqrt{d})$, 3) pick best variable to split classes 4)
+Recursively split until the minimal node size is reached. 5) Return ensemble of
+decision trees.
+\end{comment}
+\subsubsection{Ada Boost}
+
+$
+f^*(x) = \argmin_{f\in F} \sum_{i=1}^{n} \exp(-y_i f(x_i))
+\,\,
+\text{(eff. mins. exp. l.)}
+$
+
+\begin{algorithm}[H]
+\caption{AdaBoost Algorithm}
+\DontPrintSemicolon
+Initialize the observation weights: $\forall
+i\colon w_i^{(1)}\gets\frac{1}{n}$\;
+\For{$b\gets 1$ \KwTo $B$}{
+	Fit a clf. $c_b(x)$ to the weigthed training data (acc. to $w_i$)\;
+	$\epsilon_b\gets\frac{\sum_{i=1}^n w_i^{(b)}\ind{c_b(x_i)\neq y_i}}{\sum_{i=1}^n
+w_i^{(b)}}$ \,\, (error of the weak learner)\;
+	$\alpha_b\gets\log\left(\frac{1-\epsilon_b}{\epsilon_b}\right)$\,\,(weigh
+	classifier acc. to accuracy)\; 
+	Update the datapoint weights for the next step:\;
+	For all $i\in\set{1,\ldots n}$ do
+	$w_i^{(b+1)}\gets w_i^{(b)}\exp\left(\alpha_b\ind{y_i\neq c_b(x_i)}\right)$\;
+}
+\Return $\hat{c}_B(x)=\sign\left(\sum_{b=1}^B \alpha_bc_b(x)\right)$\;
+\end{algorithm}
+
+Additive log. reg., Bayesian approach (assumes
+poster.), Newtonlike updates (GD), if prev. clf. bad,
+next has high weight.
+
+\section{Generative Methods}
+
+\subsection{Naive Bayes}
+Features indep.
+$
+P(y|x) = \frac{1}{Z} P(y) P(x|y), Z = \sum_{y} P(y) P(x|y)
+$
+
+$
+y = \argmax_{y'} P(y'|x) = \argmax_{y'} \hat{P}(y') \prod_{i=1}^{d} \hat{P}(x_i|y')
+$
+
+Discr. Func.:
+$
+f(x) = \log(\frac{P(y=1|x)}{P(y==1|x)}), y=sign(f(x))
+$
+
+\subsection{Fischer's LDA}
+$J(\vw)=\frac{\norm{\vw^\T(\vmu_1-\vmu_2)}}{\vw^\T(\MSigma_1 + \MSigma_2)\vw}$
+$\hat{\vw}=(\MSigma_1+\MSigma_2)^{-1}(\vmu_1-\vmu_2)$ (unscaled)
+
+However, all samples influence boundary (better: points at border, SVM)
+
+\section{Unsupervised Learning}
+
+\subsection{Gaussian Mixture Modeling}
+$
+(\mu^*, \Sigma^*, \pi^*) = \argmin -\sum_i log \sum_{j=1}^{k} \pi_j
+\mathcal{N}(x_i|\mu_i,\Sigma_j) $
+
+\subsection{EM Algorithm}
+Problem: sum within log-term of likelihood.
+ 
+\textbf{E-step}: expectation: pick clusters for points.
+
+Calculate $\gamma_j^{(t)}(x_i) = \frac{P(c|\theta^j) (x_i|c,\theta^j)}{\sum P(x_i|\theta)}$ for each $i$ and $j$
+
+\textbf{M-Step}: maximum LH: adjust clusters to best fit points.
+
+
+
+$
+\text{prior}_j^{(t)} = \pi^{(t)}_j \leftarrow \frac{1}{n}\sum_{i=1}^n
+\gamma_j^{(t)}(x_i) 
+$
+
+$
+\mu_j^{(t)} \leftarrow \frac{\sum_{i=1}^n \gamma_j^{(t)}(x_i)(x_i)}{\sum_{i=1}^n \gamma^{(t)}(x_i)} 
+$,
+$
+\Sigma^{(t)}_j \leftarrow \frac{\sum_{i=1}^n
+\gamma_j^{(t)}(x_i)(x_i-\mu_j^{(t)})(x_i-\mu_j^{(t)})^\top}{\sum_{i=1}^n \gamma_j^{(t)}(x_i)} $
+
+\begin{comment}
+\subsection{EM for non-gaussian mixture}
+\textbf{Problem setting}
+Derive the EM algorithm. The model behind the EM in the form:
+\(p(x) = \sum\limits^n_{j=1}\pi_j Pr_{\text{non-gaussian}}\)
+\textbf{Solution}
+\begin{enumerate}[topsep=0pt,itemsep=0ex,partopsep=1ex,parsep=1ex,leftmargin=*]
+\item Write  log likelihood function:
+\[L(X,\{\text{params}Pr_{non-gaussian} u_js\}) = \sum\limits^n_{i=1} \log \left( p(x_i)\right)\]
+\item Write \(\gamma_j(x_i) = p(z_j = j | x_i)\) (prob. that \(x_i\) was generated from \(j^{th}\) dist. of the mixture).
+\begin{align*}
+\gamma_j(x_i) &= p(z_i = j | x_i) = \frac{p(x_i|z_i = j) p(z_i = j)}{p(x_i)}\\
+&= \frac{p(x_i|z_i = j) p(z_i = j)}{\sum\limits^n_{k=1}p(x_i|z_i = k) p(z_i = k)}
+= \frac{\pi_i L(X,u_js)}{\sum^n_{k=1}\pi_k L(X,u_js)}
+\end{align*}
+\item \textbf{To get optimal }\(\mathbf{u_js}\), derive \(L(x,u_js)\) by each param \(u_j\).
+You get:
+\[\nabla x_j L(X,u_js) = \sum\limits^n_{i=1}\frac{1}{Pr_{non-gaussian}} \cdot
+(\nabla u_j Pr_{non-gaussian})\](possibly replace by \(\gamma_j(x_i)\) (above
+and below) leaving back some factor). Solve for the parameter \(u_j\).
+\item \textbf{Estimate the \(\pi\) parameters} by Lagrange optimization on log
+likelihood function and constraint \(\lambda \left(\sum\limits^k_{j=1}\pi_j
+-1\right) \). Put the \(\lambda\) into the formula and find the formula for
+\(\pi_j\).
+\end{enumerate}
+\end{comment}
+
+\end{multicols*}
+\end{landscape}
+\end{document}
